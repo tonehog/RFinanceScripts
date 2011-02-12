@@ -1,0 +1,61 @@
+15:43 <@az> getSymbols("^XAU")                                      
+15:43 <@az> getSymbols("^DJI")                                      
+15:44 <@az> then only x1<-zoo(XAU) also x2<-zoo(DJI) and finally    
+            you simply do x2/x1                                     
+15:44 <@az> what you gave me previously for getting the inflation   
+            indexing etc... wasnt clarified, that wasnt my          
+            point... the point was just scoring a zoo/xts broadly   
+            by another index                                        
+15:45 <@az> apply lapply doesnt work and one has to define          
+            specifically as zoo in order to manipulate              
+15:45 <@az> but after that its just a broad division.               
+15:46 <@az> of course that might not be what you were looking for   
+            re inflation and i have to look it over, but i wasnt     
+            able to even get zoo casts for comparison                
+            previously...                                            
+15:46 <@az> anyway just plot(x1/x2) after that...                    
+15:46 <@tonehog> aah                                                 
+15:46 <@tonehog> doesn't conversion strip the index?                 
+15:47 <@az> no                                                       
+15:47 <@az> because it only takes the intersection of the two
+15:47 <@az> and since the data pulls days, thats no problem
+15:47 <@az> but yea, that can be an issue with other data sets
+15:47 <@az> see, working with dataframes is a bit diff in general
+            than zoo and xts
+15:48 <@az> dataframes what i meant by factoring out was that you
+            could more intuitively do XAU$Close
+15:49 <@az> Another mistake I had was that you dont  need to
+            initialize an value with getSymbols, autoloads it into
+            the workspace
+15:50 <@az> i have to check the data, and im sloppy not to atm but
+ this is the price of gold calculated with paired         
+            weightings across the price of DJI.                      
+15:53 <@az> model checking it makes sense, ammt of dji that gold     
+            would buy went up late 2008 but right back down by       
+            2009... as dji moved with the credit crunch, then        
+            regained footing... while gold was more volatile         
+15:59 <@tonehog> so the datetime index is retained in the zoo
+                 conversion, and zoo supports basic maths
+16:03 <@az> Yea
+16:03 <@az> in the help file, under zoo->zoo example with
+            arithmetic on zoo objects intersects them first
+            triggered me off
+16:04 <@az> id done that before, but i didnt realize the
+            x1<-zoo(index) element
+16:04 <@az> checking your objects with typeof() class() etc go a
+            ways
+16:05 <@az> wanted something like N<-length(DJI) ...
+ 	    value<-DJI[2:N]*XAU[2:N] ... or that same function
+            passed as argument to rollapply
+16:07 <@az> that would work with standard vectors or a dataframe,
+            but with zoo, since they are aware of the distances
+            between dates as  index and not as.Date... doesnt work
+16:07 <@az> So I think given their definitions you can also do
+            broader calculations as such easier... but not iron
+            clad on that yet
+16:09  * tonehog is on a skype call
+16:09 <@az> z<-zoo(cbind(foo=rnorm(5),bar=rnorm(5)) extracts so
+            normal column names works a la z$fooo
+
+WORLD GDP STATS
+http://www.imf.org/external/pubs/ft/weo/2010/02/weodata/weorept.aspx?pr.x=35&pr.y=12&sy=2010&ey=2010&scsm=1&ssd=1&sort=country&ds=.&br=1&c=512,941,914,446,612,666,614,668,311,672,213,946,911,137,193,962,122,674,912,676,313,548,419,556,513,678,316,181,913,682,124,684,339,273,638,921,514,948,218,943,963,686,616,688,223,518,516,728,918,558,748,138,618,196,522,278,622,692,156,694,624,142,626,449,628,564,228,283,924,853,233,288,632,293,636,566,634,964,238,182,662,453,960,968,423,922,935,714,128,862,611,716,321,456,243,722,248,942,469,718,253,724,642,576,643,936,939,961,644,813,819,199,172,184,132,524,646,361,648,362,915,364,134,732,652,366,174,734,328,144,258,146,656,463,654,528,336,923,263,738,268,578,532,537,944,742,176,866,534,369,536,744,429,186,433,925,178,746,436,926,136,466,343,112,158,111,439,298,916,927,664,846,826,299,542,582,967,474,443,754,917,698,544&s=NGDPD&grp=0&a=#download
